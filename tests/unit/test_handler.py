@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from hello_world import app
+from app import app
 
 
 def test_lambda_handler(apigw_event, mocker):
