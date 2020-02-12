@@ -9,7 +9,8 @@ import uuid
 
 dynamodb = boto3.resource(
     'dynamodb',
-    endpoint_url='http://dynamodb:8000',  # TODO: Refer env var or something instead
+    endpoint_url='http://localhost:8000',  # TODO: Refer env var or something instead
+    # endpoint_url='http://dynamodb:8000',  # TODO: Refer env var or something instead
 )
 table = dynamodb.Table('testUserTable')  # TODO: Refer env var or something instead
 
