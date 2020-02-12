@@ -76,10 +76,15 @@ class UserHandler:
         try:
             response = table.update_item(
                 Key={'user_id': user_id},
+
+                # Assign an alias to a reserved word.
                 UpdateExpression='SET #nm = :newname',
                 ExpressionAttributeNames={'#nm': 'name'},
-                ExpressionAttributeValues={':newname': parameters['name'], ':user_id': user_id},
+
+                # Condition to avoid creating new item if a datum that has specified id is already stored
                 ConditionExpression='user_id = :user_id',
+
+                ExpressionAttributeValues={':newname': parameters['name'], ':user_id': user_id},
                 ReturnValues='UPDATED_NEW',
             )
         except ClientError as e:

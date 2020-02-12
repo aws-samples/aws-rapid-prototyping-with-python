@@ -73,3 +73,30 @@ class TestDispatchRequestDelete:
         assert response['statusCode'] == HTTPStatus.NO_CONTENT
         assert json.loads(response['body']) == {}
         assert fx_dynamodb_table.scan()['Items'] == []
+
+
+class TestDispatchRequestPatch:
+    @pytest.fixture
+    def event(self, apigw_event, fx_dummy_user):  # TODO: Specify type
+        apigw_event['requestContext']['path'] = '/user/{user_id}'
+        apigw_event['httpMethod'] = 'PATCH'
+        apigw_event['pathParameters']['user_id'] = fx_dummy_user['user_id']
+        return apigw_event
+
+    def test_200(self, event, fx_dynamodb_table) -> None:
+        new_name = 'fatsushi2'
+        event['body'] = json.dumps({'name': new_name})
+
+        response = app.dispatch_request(event, {})
+        response_json = json.loads(response['body'])
+
+        assert response['statusCode'] == HTTPStatus.OK
+        assert fx_dynamodb_table.scan()['Items'][0] == response_json
+        assert response_json['name'] == new_name
+
+    def test_404(self, event) -> None:
+        event['pathParameters']['user_id'] = 'DUMMYID'
+        event['body'] = json.dumps({'name': 'DUMMYNAME'})
+
+        response = app.dispatch_request(event, {})
+        assert response['statusCode'] == HTTPStatus.NOT_FOUND
