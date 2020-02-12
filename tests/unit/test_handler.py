@@ -55,3 +55,21 @@ class TestDispatchRequestPut:
         response_json = json.loads(response['body'])
         assert response['statusCode'] == HTTPStatus.CREATED
         assert fx_dynamodb_table.scan()['Items'][0] == response_json
+
+
+class TestDispatchRequestDelete:
+    @pytest.fixture
+    def event(self, apigw_event, fx_dummy_user):  # TODO: Specify type
+        apigw_event['requestContext']['path'] = '/user/{user_id}'
+        apigw_event['httpMethod'] = 'DELETE'
+        apigw_event['pathParameters']['user_id'] = fx_dummy_user['user_id']
+        return apigw_event
+
+    def test_200(self, event, fx_dummy_user, fx_dynamodb_table) -> None:
+        # Ensure that the dummy user exists before calling the method
+        assert fx_dynamodb_table.scan()['Items'][0] == fx_dummy_user
+
+        response = app.dispatch_request(event, {})
+        assert response['statusCode'] == HTTPStatus.NO_CONTENT
+        assert json.loads(response['body']) == {}
+        assert fx_dynamodb_table.scan()['Items'] == []
