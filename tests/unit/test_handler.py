@@ -6,6 +6,22 @@ import pytest
 from app import app
 
 
+class TestDispatchRequestGeneral:
+    def test_404(self, apigw_event) -> None:
+        apigw_event['requestContext']['path'] = '/NOT_IMPLEMENTED_PATH'
+        response = app.dispatch_request(apigw_event, {})
+        assert response['statusCode'] == HTTPStatus.NOT_FOUND
+
+    @pytest.mark.parametrize('not_allowed_method', (
+        'POST', 'OPTIONS', 'CONNECT', 'TRACE',
+    ))
+    def test_405(self, apigw_event, not_allowed_method: str) -> None:
+        apigw_event['requestContext']['path'] = '/user'
+        apigw_event['httpMethod'] = not_allowed_method
+        response = app.dispatch_request(apigw_event, {})
+        assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED
+
+
 class TestDispatchRequestGet:
     @pytest.fixture
     def event(self, apigw_event, fx_dummy_user):  # TODO: Specify type
