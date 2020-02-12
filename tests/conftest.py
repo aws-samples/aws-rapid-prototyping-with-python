@@ -2,6 +2,8 @@ from typing import Collection, Dict, Union
 
 import pytest
 
+import uuid
+
 from app.app import dynamodb
 
 
@@ -95,21 +97,13 @@ def fx_dynamodb_table():  # type: ignore
         TableName='testUserTable',  # TODO: Refer env var or something instead
         KeySchema=[
             {
-                'AttributeName': 'id',
+                'AttributeName': 'user_id',
                 'KeyType': 'HASH',
-            },
-            {
-                'AttributeName': 'name',
-                'KeyType': 'RNAGE',
             },
         ],
         AttributeDefinitions=[
             {
-                'AttributeName': 'id',
-                'AttributeType': 'S',
-            },
-            {
-                'AttributeName': 'name',
+                'AttributeName': 'user_id',
                 'AttributeType': 'S',
             },
         ],
@@ -117,3 +111,12 @@ def fx_dynamodb_table():  # type: ignore
     )
     yield table
     table.delete()
+
+
+@pytest.fixture
+# TODO: Specify appropriate return type
+def fx_dummy_user(fx_dynamodb_table):
+    user = {'user_id': uuid.uuid4().hex, 'name': 'fatsushi'}
+    fx_dynamodb_table.put_item(Item=user)
+    yield user
+    fx_dynamodb_table.delete_item(Key={'user_id': user['user_id']})
