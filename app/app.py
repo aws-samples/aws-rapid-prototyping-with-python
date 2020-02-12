@@ -46,6 +46,8 @@ class UserHandler:
     @classmethod
     def put(cls, event: EventType) -> Tuple[int, Dict[str, str]]:
         parameters = json.loads(event['body'])
+
+        # TODO: Add a condition to prohibit overriding existing user just in case
         item = {'user_id': uuid.uuid4().hex, 'name': parameters['name']}
 
         try:

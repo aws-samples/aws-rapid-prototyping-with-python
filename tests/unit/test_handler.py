@@ -40,3 +40,18 @@ class TestDispatchRequestGet:
 
         response = app.dispatch_request(event, {})
         assert response['statusCode'] == HTTPStatus.NOT_FOUND
+
+
+class TestDispatchRequestPut:
+    @pytest.fixture
+    def event(self, apigw_event):  # TODO: Specify type
+        apigw_event['requestContext']['path'] = '/user'
+        apigw_event['httpMethod'] = 'PUT'
+        apigw_event['body'] = json.dumps({'name': 'fatsushi'})
+        return apigw_event
+
+    def test_200(self, event, fx_dynamodb_table) -> None:
+        response = app.dispatch_request(event, {})
+        response_json = json.loads(response['body'])
+        assert response['statusCode'] == HTTPStatus.CREATED
+        assert fx_dynamodb_table.scan()['Items'][0] == response_json
