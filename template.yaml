@@ -14,6 +14,14 @@ Outputs:
   RestAPIId:
     Value:
       Ref: RestAPI
+
+Globals:
+  Function:
+    Environment:
+      Variables:
+        DYNAMODB_ENDPOINT_URL: null
+        DYNAMODB_TABLE_NAME: testUserTable
+
 Resources:
   APIHandler:
     Properties:

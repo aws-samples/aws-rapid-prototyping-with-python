@@ -2,6 +2,7 @@ from typing import Collection, Dict, Union
 
 import pytest
 
+import os
 import uuid
 
 from app.app import dynamodb
@@ -94,7 +95,7 @@ def apigw_event() -> ApiGatewayEventType:
 # TODO: Specify appropriate return type
 def fx_dynamodb_table():  # type: ignore
     table = dynamodb.create_table(
-        TableName='testUserTable',  # TODO: Refer env var or something instead
+        TableName=os.environ['DYNAMODB_TABLE_NAME'],
         KeySchema=[
             {
                 'AttributeName': 'user_id',

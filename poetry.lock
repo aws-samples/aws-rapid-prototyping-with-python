@@ -242,6 +242,17 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 category = "dev"
+description = "py.test plugin that allows you to add environment variables."
+name = "pytest-env"
+optional = false
+python-versions = "*"
+version = "0.6.2"
+
+[package.dependencies]
+pytest = ">=2.6.0"
+
+[[package]]
+category = "dev"
 description = "pytest plugin to check FLAKE8 requirements"
 name = "pytest-flake8"
 optional = false
@@ -385,7 +396,7 @@ python-versions = "*"
 version = "0.1.8"
 
 [metadata]
-content-hash = "abde32ba74ea94d376becf82fd3da92db906c19dc9c758e990ccb177a774f6bd"
+content-hash = "1371f31b44fc9ffa786a1208b2b8c66f20aa1ef754ca5de85dd819bbdde90140"
 python-versions = "3.8.*"
 
 [metadata.files]
@@ -489,6 +500,9 @@ pyparsing = [
 pytest = [
     {file = "pytest-5.3.5-py3-none-any.whl", hash = "sha256:ff615c761e25eb25df19edddc0b970302d2a9091fbce0e7213298d85fb61fef6"},
     {file = "pytest-5.3.5.tar.gz", hash = "sha256:0d5fe9189a148acc3c3eb2ac8e1ac0742cb7618c084f3d228baaec0c254b318d"},
+]
+pytest-env = [
+    {file = "pytest-env-0.6.2.tar.gz", hash = "sha256:7e94956aef7f2764f3c147d216ce066bf6c42948bb9e293169b1b1c880a580c2"},
 ]
 pytest-flake8 = [
     {file = "pytest-flake8-1.0.4.tar.gz", hash = "sha256:4d225c13e787471502ff94409dcf6f7927049b2ec251c63b764a4b17447b60c0"},

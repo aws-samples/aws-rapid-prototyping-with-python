@@ -4,15 +4,15 @@ import boto3
 from botocore.exceptions import ClientError
 
 import json
+import os
 import uuid
 
 
 dynamodb = boto3.resource(
     'dynamodb',
-    endpoint_url='http://localhost:8000',  # TODO: Refer env var or something instead
-    # endpoint_url='http://dynamodb:8000',  # TODO: Refer env var or something instead
+    endpoint_url=os.environ['DYNAMODB_ENDPOINT_URL'],
 )
-table = dynamodb.Table('testUserTable')  # TODO: Refer env var or something instead
+table = dynamodb.Table(os.environ['DYNAMODB_TABLE_NAME'])
 
 EventType = Dict[str, Any]
 ContextType = Dict[str, Any]
