@@ -1,6 +1,12 @@
 ## AWS Rapid Prototyping with Python
 
-This is a project to experience application development on AWS with the actual minimal implementations!
+This is a project to experience application development on AWS with the actual minimal implementations!  
+It contains:
+- Basic 3-tiers serverlss WEB application which depends on:
+  - Amazon API Gateway
+  - AWS Lambda
+  - Amazon DynamoDB
+- Unit tests
 
 ## Try it out on your local machine
 
@@ -33,11 +39,23 @@ $ poetry install
 
 ### Run locally
 
+You can launch the application on your local machine with the following script, it performs:
+- Pull the docker image of DynamoDB Local from [dockerhub](https://hub.docker.com/r/amazon/dynamodb-local)
+- Create a docker network common between DynamoDB Local and SAM Local if not exists
+- Lanuch DynamoDB Local
+- Create DynamoDB schema into DynamoDB Local
+- Launch application through SAM Local
+
 ```sh
 $ bash scripts/samlocal.sh
 ```
 
-### Run unit tests
+### Run unit test
+
+You can run unit test with the following script, it performs:
+- Lanuch DynamoDB Local
+  - Different container from SAM Local's one
+- Run py.test
 
 ```sh
 bash scripts/unittest.sh
