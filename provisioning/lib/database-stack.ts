@@ -13,10 +13,6 @@ export class DatabaseStack extends cdk.Stack {
                 name: 'user_id',
                 type: dynamodb.AttributeType.STRING,
             },
-            sortKey: {
-                name: 'name',
-                type: dynamodb.AttributeType.STRING,
-            },
         });
     }
 }

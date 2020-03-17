@@ -22,13 +22,16 @@ export class ApiStack extends cdk.Stack {
         });
         
         apiProps.database.table.grantReadWriteData(userFunction);
-        
-        const api = new apigateway.LambdaRestApi(this, 'UserApi', {
-            handler: userFunction,
-            options: {
-                restApiName: 'UserApi',
-            },
-            proxy: true,
-        });
+
+        const userFunctionIntegration = new apigateway.LambdaIntegration(userFunction, {});
+
+        const api = new apigateway.RestApi(this, 'UserRestApi', { restApiName: 'userRestApi' });
+        const apiUser = api.root.addResource('user');
+        const apiUserId = apiUser.addResource('{user_id}');
+
+        apiUser.addMethod('PUT', userFunctionIntegration);
+        apiUserId.addMethod('GET', userFunctionIntegration);
+        apiUserId.addMethod('DELETE', userFunctionIntegration);
+        apiUserId.addMethod('PATCH', userFunctionIntegration);
     }
 }

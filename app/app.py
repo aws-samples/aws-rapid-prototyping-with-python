@@ -99,7 +99,7 @@ PATHS = {
 
 
 def dispatch_request(event: EventType, context: ContextType) -> ResponseType:
-    request_path = event['path']
+    request_path = event['requestContext']['resourcePath']
     if request_path not in PATHS:
         return {'statusCode': 404, 'body': json.dumps({'message': 'NOT FOUND'})}
 
