@@ -8,10 +8,7 @@ import os
 import uuid
 
 
-dynamodb = boto3.resource(
-    'dynamodb',
-    endpoint_url=os.environ['DYNAMODB_ENDPOINT_URL'],
-)
+dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ['DYNAMODB_TABLE_NAME'])
 
 EventType = Dict[str, Any]
@@ -102,7 +99,7 @@ PATHS = {
 
 
 def dispatch_request(event: EventType, context: ContextType) -> ResponseType:
-    request_path = event['requestContext']['path']
+    request_path = event['path']
     if request_path not in PATHS:
         return {'statusCode': 404, 'body': json.dumps({'message': 'NOT FOUND'})}
 
