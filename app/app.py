@@ -10,7 +10,7 @@ import uuid
 
 dynamodb = boto3.resource(
     'dynamodb',
-    endpoint_url=os.environ['DYNAMODB_ENDPOINT_URL'],
+    endpoint_url=os.getenv('DYNAMODB_ENDPOINT_URL'),
 )
 table = dynamodb.Table(os.environ['DYNAMODB_TABLE_NAME'])
 
