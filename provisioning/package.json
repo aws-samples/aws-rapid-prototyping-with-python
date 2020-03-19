@@ -21,8 +21,10 @@
     "typescript": "~3.7.2"
   },
   "dependencies": {
-    "@aws-cdk/aws-dynamodb": "^1.23.0",
-    "@aws-cdk/core": "1.23.0",
+    "@aws-cdk/aws-apigateway": "^1.28.0",
+    "@aws-cdk/aws-dynamodb": "^1.28.0",
+    "@aws-cdk/aws-lambda": "^1.28.0",
+    "@aws-cdk/core": "1.28.0",
     "source-map-support": "^0.5.16"
   }
 }
