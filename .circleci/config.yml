@@ -1,0 +1,31 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: amazon/dynamodb-local
+
+    environment:
+      - DYNAMODB_ENDPOINT_URL: http://localhost:8000
+      - DYNAMODB_TABLE_NAME: testUserTable
+
+orbs:
+  python: circleci/python@0.2.1
+  poetry: frameio/poetry@0.13.3
+
+jobs:
+  build-and-test:
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
+      - run:
+          command: python -m pytest ./tests/ -vv
+          name: Test
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
