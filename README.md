@@ -1,4 +1,4 @@
-## AWS Rapid Prototyping with Python
+## AWS Rapid Prototyping with Python [![CircleCI](https://circleci.com/gh/aws-samples/aws-rapid-prototyping-with-python.svg?style=svg)](https://circleci.com/gh/aws-samples/aws-rapid-prototyping-with-python)
 
 This is a project to experience application development on AWS with the actual minimal implementations!  
 It contains:
