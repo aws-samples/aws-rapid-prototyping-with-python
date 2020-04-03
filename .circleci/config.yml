@@ -1,0 +1,47 @@
+version: 2.1
+
+executors:
+  default:
+    parameters:
+      python_version:
+        type: string
+        default: latest
+    docker:
+      - image: circleci/python:<< parameters.python_version >>
+      - image: amazon/dynamodb-local
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  build-and-test:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - run:
+          name: Setup Poetry
+          command: |
+            pip install poetry
+            poetry export --dev -f requirements.txt > requirements.txt
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
+      - run:
+          name: Wait for DynamoDB launching
+          command: |
+            for i in `seq 1 20`;
+            do
+              nc -z localhost 8000 && echo "Launched" && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo "Failed to launche" && exit 1
+      - run:
+          name: Test
+          command: python -m pytest ./tests/ -vv
+
+workflows:
+  main:
+    jobs:
+      - build-and-test
