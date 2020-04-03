@@ -4,7 +4,7 @@ set -e
 DOCKER_NETWORK_NAME=lambda-local
 DDB_CONTAINER_PREFIX=dynamodblocalpythonrapid
 DDB_CONTAINER_NAME=${DDB_CONTAINER_PREFIX}$(date "+%Y%m%d%H%M%S")
-DDB_LOCAL_PORT=8000
+DDB_LOCAL_PORT=8001
 EXISTING_CONTAINERS=$(docker ps -aq --filter name=${DDB_CONTAINER_PREFIX})
 PATH_TO_ENVVAR=/tmp/pythonrapidenv.json
 

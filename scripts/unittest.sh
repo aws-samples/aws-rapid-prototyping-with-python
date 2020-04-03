@@ -5,7 +5,7 @@ CWD=$(dirname "${0}")
 
 DDB_CONTAINER_PREFIX=unittestddblocal
 DDB_CONTAINER_NAME=${DDB_CONTAINER_PREFIX}$(date "+%Y%m%d%H%M%S")
-DDB_LOCAL_PORT=8001
+DDB_LOCAL_PORT=8000
 EXISTING_CONTAINERS=$(docker ps -aq --filter name=${DDB_CONTAINER_PREFIX})
 PATH_TO_ENVVAR=/tmp/pythonrapidenv.json
 
