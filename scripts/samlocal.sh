@@ -1,7 +1,9 @@
 #!/bin/bash
 set -e
 
+CWD=$(dirname "${0}")
 DOCKER_NETWORK_NAME=lambda-local
+DDB_TABLE_NAME=testUserTable
 DDB_CONTAINER_PREFIX=dynamodblocalpythonrapid
 DDB_CONTAINER_NAME=${DDB_CONTAINER_PREFIX}$(date "+%Y%m%d%H%M%S")
 DDB_LOCAL_PORT=8001
@@ -22,15 +24,17 @@ if [ ! "x${EXISTING_CONTAINERS}" = "x" ]; then
   docker stop ${EXISTING_CONTAINERS}
   docker rm ${EXISTING_CONTAINERS}
 fi
-docker run -d --name ${DDB_CONTAINER_NAME} --net ${DOCKER_NETWORK_NAME} -p ${DDB_LOCAL_PORT}:${DDB_LOCAL_PORT} amazon/dynamodb-local
+docker run -d --name ${DDB_CONTAINER_NAME} --net ${DOCKER_NETWORK_NAME} -p ${DDB_LOCAL_PORT}:8000 amazon/dynamodb-local
 
 # Create DDB schema
 /usr/local/bin/aws dynamodb create-table --endpoint-url http://localhost:${DDB_LOCAL_PORT} \
-  --table-name testUserTable \
+  --table-name ${DDB_TABLE_NAME} \
   --attribute-definitions AttributeName=user_id,AttributeType=S \
   --key-schema AttributeName=user_id,KeyType=HASH \
   --billing-mode PAY_PER_REQUEST
 
 # Launch SAM Local
-echo "{\"Parameters\": {\"DYNAMODB_ENDPOINT_URL\": \"http://${DDB_CONTAINER_NAME}:${DDB_LOCAL_PORT}\"}}" | jq . > ${PATH_TO_ENVVAR}
-sam local start-api --docker-network ${DOCKER_NETWORK_NAME} --env-vars ${PATH_TO_ENVVAR}
+echo "{\"Parameters\": {\"DYNAMODB_ENDPOINT_URL\": \"http://${DDB_CONTAINER_NAME}:${DDB_LOCAL_PORT}\", \"DYNAMODB_TABLE_NAME\": \"${DDB_TABLE_NAME}\"}}" | jq . > ${PATH_TO_ENVVAR}
+cd ${CWD}/../provisioning
+cdk synth
+sam local start-api --template-file cdk.out/ApiStack.template.json --docker-network ${DOCKER_NETWORK_NAME} --env-vars ${PATH_TO_ENVVAR}
