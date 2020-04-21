@@ -1,0 +1,17 @@
+{
+  "version": "2.0",
+  "app_name": "emailImageResizer",
+  "autogen_policy": false,
+  "iam_policy_file": "policy.json",
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "environment_variables": {
+        "PIXEL_RESIZE_TO": "",
+        "S3_BUCKET_NAME": "",
+        "S3_SOURCE_PREFIX": "",
+        "S3_DESTINATION_PREFIX": ""
+      }
+    }
+  }
+}
