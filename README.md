@@ -2,7 +2,7 @@
 
 This is a project to experience application development on AWS with the actual minimal implementations!  
 It contains:
-- Basic 3-tiers serverlss WEB application which depends on:
+- Basic 3-tiers serverless WEB application which depends on:
   - Amazon API Gateway
   - AWS Lambda
   - Amazon DynamoDB
